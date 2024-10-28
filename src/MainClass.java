@@ -3,6 +3,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.time.format.TextStyle;
 import java.util.Locale;
+import java.util.Scanner;
 
 class Planner {
     ArrayList<String> tasks;
@@ -22,12 +23,20 @@ class Planner {
         tasks.add(task);
     }
 
-    void taskRemove(int task_num) {
-        tasks.remove(task_num);
+    void taskRemove(int taskNum) {
+        if (taskNum >= 0 && taskNum < tasks.size()) {
+            tasks.remove(taskNum);
+        } else {
+            System.out.println("Неверный номер задачи.");
+        }
     }
 
-    void changeTask(int task_num, String new_tasks) {
-        tasks.set(task_num, new_tasks);
+    void changeTask(int taskNum, String newTask) {
+        if (taskNum >= 0 && taskNum < tasks.size()) {
+            tasks.set(taskNum, newTask);
+        } else {
+            System.out.println("Неверный номер задачи.");
+        }
     }
 
     public void printTasks() {
@@ -44,15 +53,55 @@ class Planner {
 
 public class MainClass {
     public static void main(String[] args) {
-        Planner plan = new Planner();
-        plan.printDate();
-        plan.taskAdd("Написать планнер задач");
-        plan.taskAdd("Сходить в гости к Антону");
-        plan.taskAdd("Попить чай с котом");
-        plan.taskAdd("Дописать программу");
-        plan.printTasks();
-        plan.changeTask(2, "Покушать пиццу");
-        System.out.println();
-        plan.printTasks();
+        Planner planner = new Planner();
+        Scanner scanner = new Scanner(System.in);
+        planner.printDate();
+
+        while (true) {
+            System.out.println("\nВыберите действие:");
+            System.out.println("1. Добавить задачу");
+            System.out.println("2. Удалить задачу");
+            System.out.println("3. Изменить задачу");
+            System.out.println("4. Показать задачи");
+            System.out.println("5. Выйти");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Переход на следующую строку
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Введите задачу: ");
+                    String task = scanner.nextLine();
+                    planner.taskAdd(task);
+                    break;
+
+                case 2:
+                    System.out.print("Введите номер задачи для удаления: ");
+                    int taskNum = scanner.nextInt() - 1;
+                    planner.taskRemove(taskNum);
+                    break;
+
+                case 3:
+                    System.out.print("Введите номер задачи для изменения: ");
+                    taskNum = scanner.nextInt() - 1;
+                    scanner.nextLine(); // Переход на следующую строку
+                    System.out.print("Введите новое описание задачи: ");
+                    String newTask = scanner.nextLine();
+                    planner.changeTask(taskNum, newTask);
+                    break;
+
+                case 4:
+                    planner.printTasks();
+                    break;
+
+                case 5:
+                    System.out.println("Выход...");
+                    scanner.close();
+                    return;
+
+                default:
+                    System.out.println("Неверный выбор, попробуйте снова.");
+            }
+        }
     }
 }
