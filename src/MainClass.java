@@ -26,6 +26,10 @@ class Planner {
         tasks.remove(task_num);
     }
 
+    void changeTask(int task_num, String new_tasks) {
+        tasks.set(task_num, new_tasks);
+    }
+
     public void printTasks() {
         if (tasks.isEmpty()) {
             System.out.println("Задач пока нет.");
@@ -47,7 +51,8 @@ public class MainClass {
         plan.taskAdd("Попить чай с котом");
         plan.taskAdd("Дописать программу");
         plan.printTasks();
-        
-
+        plan.changeTask(2, "Покушать пиццу");
+        System.out.println();
+        plan.printTasks();
     }
 }
