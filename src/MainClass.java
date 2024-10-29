@@ -1,13 +1,16 @@
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
 class Planner {
     ArrayList<String> tasks;
     DayOfWeek dayOfWeek;
+    boolean hasTasks() {
+        return !tasks.isEmpty();
+    }
 
     public Planner() {
         tasks = new ArrayList<>();
@@ -35,13 +38,14 @@ class Planner {
         if (taskNum >= 0 && taskNum < tasks.size()) {
             tasks.set(taskNum, newTask);
         } else {
-            System.out.println("Неверный номер задачи.");
+            System.out.println("\nНеверный номер задачи.");
         }
     }
 
     public void printTasks() {
         if (tasks.isEmpty()) {
-            System.out.println("Задач пока нет.");
+            
+            System.out.println("\nЗадач пока нет.");
         } else {
             System.out.println("Список задач:");
             for (int i = 0; i < tasks.size(); i++) {
@@ -58,7 +62,7 @@ public class MainClass {
         planner.printDate();
 
         while (true) {
-            System.out.println("\nВыберите действие:");
+            System.out.println("\nВыберите действие:\n");
             System.out.println("1. Добавить задачу");
             System.out.println("2. Удалить задачу");
             System.out.println("3. Изменить задачу");
@@ -82,12 +86,16 @@ public class MainClass {
                     break;
 
                 case 3:
-                    System.out.print("Введите номер задачи для изменения: ");
-                    taskNum = scanner.nextInt() - 1;
-                    scanner.nextLine(); // Переход на следующую строку
-                    System.out.print("Введите новое описание задачи: ");
-                    String newTask = scanner.nextLine();
-                    planner.changeTask(taskNum, newTask);
+                    if (planner.hasTasks()) {
+                        System.out.print("Введите номер задачи для изменения: ");
+                        int taskNumCheck = scanner.nextInt() - 1;
+                        scanner.nextLine(); // Переход на следующую строку
+                        System.out.print("Введите новое описание задачи: ");
+                        String newTask = scanner.nextLine();
+                        planner.changeTask(taskNumCheck, newTask);
+                    } else {
+                        System.out.println("\nНет задач для изменения.");
+                    }
                     break;
 
                 case 4:
@@ -100,7 +108,7 @@ public class MainClass {
                     return;
 
                 default:
-                    System.out.println("Неверный выбор, попробуйте снова.");
+                    System.out.println("\nНеверный выбор, попробуйте снова.");
             }
         }
     }
